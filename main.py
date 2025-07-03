@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-ShellAIAsk: 轻量级命令行AI助手工具
+shell-ai-ask: 轻量级命令行AI助手工具
 允许用户在终端直接与各大语言模型进行交互
 """
 
@@ -60,7 +60,7 @@ def main():
     
     # 解析命令行参数
     parser = argparse.ArgumentParser(
-        description="ShellAIAsk: 轻量级命令行AI助手工具",
+        description="shell-ai-ask: 轻量级命令行AI助手工具",
         epilog=f"配置文件位置: {os.path.abspath(config.config_path)}"
     )
     parser.add_argument(
@@ -97,7 +97,7 @@ def main():
                 # 回退到 pkg_resources (Python < 3.8)
                 import pkg_resources
                 app_version = pkg_resources.get_distribution("shell-ai-ask").version
-            print(f"ShellAIAsk 版本 {app_version}")
+            print(f"shell-ai-ask 版本 {app_version}")
         except Exception as e:
             print(f"警告：无法获取版本信息: {e}")
         sys.exit(0)
@@ -132,7 +132,7 @@ def main():
     # 构建完整的查询内容
     query_parts = []
     if stdin_content:  # 如果有管道输入，添加到查询中
-        query_parts.append('```\n'+stdin_content+'\n```')
+        query_parts.append('```\n'+stdin_content+'\n```\n\n')
     if args.query:  # 如果有命令行参数，添加到查询中
         query_parts.extend(args.query)
     
