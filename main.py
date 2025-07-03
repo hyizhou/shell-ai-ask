@@ -86,17 +86,20 @@ def main():
     
     args = parser.parse_args()
     
-    # 导入版本信息
-    from setuptools import find_packages
-    import pkg_resources
-    
     # 显示版本信息
     if args.version:
         try:
-            version = pkg_resources.get_distribution("ShellAIAsk").version
-            print(f"ShellAIAsk 版本 {version}")
-        except pkg_resources.DistributionNotFound:
-            print("ShellAIAsk 开发版本")
+            # 尝试使用 importlib.metadata (Python 3.8+) 或 pkg_resources
+            try:
+                from importlib.metadata import version
+                app_version = version("shell-ai-ask")
+            except ImportError:
+                # 回退到 pkg_resources (Python < 3.8)
+                import pkg_resources
+                app_version = pkg_resources.get_distribution("shell-ai-ask").version
+            print(f"ShellAIAsk 版本 {app_version}")
+        except Exception as e:
+            print(f"警告：无法获取版本信息: {e}")
         sys.exit(0)
     
     # 检测并读取管道输入
