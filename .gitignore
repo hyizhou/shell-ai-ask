@@ -22,6 +22,7 @@ wheels/
 
 # Virtual Environment
 venv/
+.venv/
 env/
 ENV/
 
@@ -36,7 +37,6 @@ ENV/
 Thumbs.db
 
 # Project specific
-.ai-bash/
 config.json
 __pycache__/
 ShellAIAsk.egg-info/

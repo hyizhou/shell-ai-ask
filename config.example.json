@@ -1,26 +1,27 @@
 {
     "default_model": "openai",
+    "language": "auto",
     "models": {
         "openai": {
-            "api_key": "your-openai-api-key",
+            "api_key": "your-openai-api-key-here",
             "model": "gpt-3.5-turbo",
             "api_base": "https://api.openai.com/v1/"
         },
         "deepseek": {
-            "api_key": "your-deepseek-api-key",
+            "api_key": "your-deepseek-api-key-here",
             "model": "deepseek-chat",
             "api_base": "https://api.deepseek.com/v1/"
         },
         "qwen": {
-            "api_key": "your-qwen-api-key",
+            "api_key": "your-qwen-api-key-here",
             "model": "qwen-max",
             "api_base": "https://dashscope.aliyuncs.com/api/v1/"
         }
     },
     "proxy": {
         "enabled": false,
-        "http": "http://127.0.0.1:7890",
-        "https": "http://127.0.0.1:7890"
+        "http": "",
+        "https": ""
     },
     "max_history": 10,
     "stream_output": true

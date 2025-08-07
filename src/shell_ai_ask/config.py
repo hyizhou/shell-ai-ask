@@ -40,6 +40,7 @@ class Config:
         # 默认配置
         self.default_config = {
             "default_model": "openai",
+            "language": "auto",  # auto表示自动检测系统语言
             "models": {
                 "openai": {
                     "api_key": "",
@@ -151,6 +152,20 @@ class Config:
     def stream_output(self) -> bool:
         """获取是否启用流式输出"""
         return self.config.get("stream_output", True)
+    
+    @property
+    def language(self) -> str:
+        """获取语言设置"""
+        return self.config.get("language", "auto")
+    
+    def set_language(self, language: str) -> None:
+        """设置语言
+        
+        Args:
+            language: 语言代码
+        """
+        self.config["language"] = language
+        self.save_config()
     
     @property
     def proxy(self) -> Dict[str, Any]:

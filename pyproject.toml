@@ -1,0 +1,13 @@
+[project]
+name = "shell-ai-ask"
+version = "0.1.0"
+description = "一个支持多语言的命令行AI助手工具，支持OpenAI、DeepSeek和通义千问等主流AI模型"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "requests>=2.25.0",
+    "pyreadline3>=3.4.0; sys_platform == 'win32'"
+]
+
+[project.scripts]
+ask = "shell_ai_ask.main:main"

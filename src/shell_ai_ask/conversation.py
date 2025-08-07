@@ -9,7 +9,7 @@
 import sys
 from typing import List, Dict, Any, Optional, Union, Generator
 
-from models import BaseModel
+from .models import BaseModel
 
 
 class Conversation:

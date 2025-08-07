@@ -12,7 +12,8 @@ from abc import ABC, abstractmethod
 from typing import Dict, List, Any, Optional, Generator, Union, Callable
 
 import requests
-from config import Config
+from .config import Config
+from .i18n import t
 
 
 class BaseModel(ABC):
@@ -103,7 +104,7 @@ class OpenAIModel(BaseModel):
             else:
                 return self._non_stream_generate(headers, data)
         except Exception as e:
-            error_msg = f"OpenAI API请求失败：{str(e)}"
+            error_msg = t("api_request_failed").format(code="Error", message=str(e))
             print(error_msg)
             if stream:
                 def error_generator():
@@ -131,7 +132,7 @@ class OpenAIModel(BaseModel):
         )
         
         if response.status_code != 200:
-            error_msg = f"API请求失败：{response.status_code} {response.text}"
+            error_msg = t("api_request_failed").format(code=response.status_code, message=response.text)
             print(error_msg)
             yield error_msg
             return
@@ -157,7 +158,7 @@ class OpenAIModel(BaseModel):
                     if content:
                         yield content
             except Exception as e:
-                print(f"解析响应时出错：{e}")
+                print(t("error_parsing_response").format(error=e))
     
     def _non_stream_generate(self, headers: Dict[str, str], data: Dict[str, Any]) -> str:
         """非流式生成回复
@@ -179,7 +180,7 @@ class OpenAIModel(BaseModel):
         )
         
         if response.status_code != 200:
-            return f"API请求失败：{response.status_code} {response.text}"
+            return t("api_request_failed").format(code=response.status_code, message=response.text)
         
         try:
             data = response.json()
@@ -187,7 +188,7 @@ class OpenAIModel(BaseModel):
                 return data['choices'][0]['message']['content']
             return ""
         except Exception as e:
-            return f"解析响应时出错：{e}"
+            return t("error_parsing_response").format(error=e)
 
 
 class DeepSeekModel(OpenAIModel):
@@ -234,7 +235,7 @@ class QwenModel(BaseModel):
             else:
                 return self._non_stream_generate(headers, data)
         except Exception as e:
-            error_msg = f"通义千问API请求失败：{str(e)}"
+            error_msg = t("api_request_failed").format(code="Error", message=str(e))
             print(error_msg)
             if stream:
                 def error_generator():
@@ -262,7 +263,7 @@ class QwenModel(BaseModel):
         )
         
         if response.status_code != 200:
-            error_msg = f"API请求失败：{response.status_code} {response.text}"
+            error_msg = t("api_request_failed").format(code=response.status_code, message=response.text)
             print(error_msg)
             yield error_msg
             return
@@ -278,7 +279,7 @@ class QwenModel(BaseModel):
                 if text:
                     yield text
             except Exception as e:
-                print(f"解析响应时出错：{e}")
+                print(t("error_parsing_response").format(error=e))
     
     def _non_stream_generate(self, headers: Dict[str, str], data: Dict[str, Any]) -> str:
         """非流式生成回复
@@ -298,13 +299,13 @@ class QwenModel(BaseModel):
         )
         
         if response.status_code != 200:
-            return f"API请求失败：{response.status_code} {response.text}"
+            return t("api_request_failed").format(code=response.status_code, message=response.text)
         
         try:
             data = response.json()
             return data.get("output", {}).get("text", "")
         except Exception as e:
-            return f"解析响应时出错：{e}"
+            return t("error_parsing_response").format(error=e)
 
 
 def get_model_instance(model_name: str, config: Config) -> Optional[BaseModel]:
@@ -329,7 +330,7 @@ def get_model_instance(model_name: str, config: Config) -> Optional[BaseModel]:
         if api_key:
             model_config["api_key"] = api_key
         else:
-            print(f"警告：未设置{model_name}的API密钥，请在配置文件中设置或通过环境变量{env_var_name}提供")
+            print(t("warning_api_key_not_set").format(model=model_name, env_var=env_var_name))
             return None
     
     # 获取代理配置
@@ -343,5 +344,5 @@ def get_model_instance(model_name: str, config: Config) -> Optional[BaseModel]:
     elif model_name.lower() == "qwen":
         return QwenModel(model_config, proxy_config)
     else:
-        print(f"错误：不支持的模型类型 '{model_name}'")
+        print(t("error_unsupported_model").format(model=model_name))
         return None
