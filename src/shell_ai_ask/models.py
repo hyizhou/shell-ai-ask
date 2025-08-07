@@ -32,14 +32,14 @@ class BaseModel(ABC):
         self.api_base = config.get("api_base", "")
         self.proxy_config = proxy_config or {}
         
-    def get_proxies(self) -> Dict[str, str]:
+    def get_proxies(self) -> Optional[Dict[str, str]]:
         """获取代理设置
         
         Returns:
-            代理设置字典
+            代理设置字典，如果未启用代理则返回None，允许使用系统代理
         """
         if not self.proxy_config.get("enabled", False):
-            return {}
+            return None  # 返回None让requests自动使用系统代理
             
         proxies = {}
         if http_proxy := self.proxy_config.get("http"):
@@ -47,7 +47,7 @@ class BaseModel(ABC):
         if https_proxy := self.proxy_config.get("https"):
             proxies["https"] = https_proxy
             
-        return proxies
+        return proxies if proxies else None
     
     @abstractmethod
     def generate(self, messages: List[Dict[str, str]], stream: bool = True) -> Union[str, Generator[str, None, None]]:
