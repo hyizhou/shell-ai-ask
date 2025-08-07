@@ -15,12 +15,25 @@ ShellAIAsk是一个轻量级命令行AI助手工具，允许用户在终端直�
 
 ### 从源码安装
 
+#### 使用 uv（推荐）
+
 ```bash
 # 克隆仓库
-git https://github.com/hyizhou/shell-ai-ask.git
+git clone https://github.com/hyizhou/shell-ai-ask.git
 cd shell-ai-ask
 
-# 安装依赖
+# 使用 uv 安装
+uv tool install .
+```
+
+#### 使用 pip
+
+```bash
+# 克隆仓库
+git clone https://github.com/hyizhou/shell-ai-ask.git
+cd shell-ai-ask
+
+# 使用 pip 安装
 pip install .
 ```
 
@@ -66,7 +79,8 @@ pip install .
         "https": "http://127.0.0.1:7890"
     },
     "max_history": 10,
-    "stream_output": true
+    "stream_output": true,
+    "language": "auto"  // 界面语言：auto(自动检测)|zh(中文)|en(英文)
 }
 ```
 
